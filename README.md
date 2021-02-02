@@ -1,6 +1,7 @@
 # OpenCV-Face-Detection
 
 Face Detection on images, videos and webcam using OpenCV and Python.<br />
+The program by default is in webcam mode.<br />
 
 ## Clone
 
@@ -33,13 +34,20 @@ optional arguments:
 
 ## Image Credits
 
-Images used for testing were taken from [unsplash.com](https://unsplash.com/)
+Images used for testing were taken from [unsplash.com](https://unsplash.com/)<br /><br />
 
 <span>Photo by <a href="https://unsplash.com/@zvandrei?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Andrey Zvyagintsev</a> on <a href="https://unsplash.com/?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
 
 <span>Photo by <a href="https://unsplash.com/@valentinlacoste?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Valentin Lacoste</a> on <a href="https://unsplash.com/?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
 
 <span>Photo by <a href="https://unsplash.com/@joelmott?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Joel Mott</a> on <a href="https://unsplash.com/t/people?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
+
+## Video Credits
+
+Videos used for testing were takend from [pexels.com](https://www.pexels.com/)<br /><br />
+
+<span><p>Video by **_cottonbro_** from **Pexels**</p></span>
+<span><p>Video by **_Yaroslav_** Shuraev from **Pexels**</p></span>
 
 ## Contributing
 

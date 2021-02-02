@@ -40,7 +40,7 @@ def main():
             err_exit("Please provide a path for image or video when mode is set to [image, video]", 3)
         
         if not verifyPath(args.path):
-            err_exit(f"Invalid path! : {path}", 4)
+            err_exit(f"Invalid path! : {args.path}", 4)
 
         MODES[args.mode](args.path)
 
@@ -51,18 +51,22 @@ def Webcam():
     Params: None
     Return: None
     """
+    # Print out instructions to user
+    print("Press '0' to stop capturing on webcam...")
+    # Capture video on webcam
     video = cv2.VideoCapture(0)
+
+    # Read face cascade xml
+    face_cascade = cv2.CascadeClassifier(FACE_CASCADE_PATH)
 
     while True:
     
         # Turn on webcam and read data
         check, frame = video.read()
 
-        # Read face cascade xml
-        face_cascade = cv2.CascadeClassifier(FACE_CASCADE_PATH)
         # Detect faces in image
         faces = face_cascade.detectMultiScale(frame, scaleFactor=1.05, minNeighbors=5)
-        print(f"Found {len(faces)} on webcam!")
+        print(f"Found {len(faces)} faces on webcam!")
 
         # Draw rectangles around the detected faces
         for x, y, w, h in faces:
@@ -71,14 +75,12 @@ def Webcam():
         cv2.imshow("Capturing", frame)
 
         # Press 0 to end video capturing
-        print("Press '0' to stop capturing on webcam...")
         if cv2.waitKey(1) == ord('0'):
             print("Webcam capturing ended...")
             break
-
-    # Destroys all windows open
-    cv2.destroyAllWindows()
-    
+            
+    # Release the VideoCapture object  
+    video.release()
 
 
 def Image(path: str):
@@ -89,7 +91,7 @@ def Image(path: str):
     """
     # Reads the image as a numpy array
     img = cv2.imread(os.path.join(".", path))
-    if not img:
+    if not img.any():
         err_exit("Invalid file! - please provde a path to an image", 404)
 
     img_filename = path.split('/')[-1].split('.')[0]
@@ -111,7 +113,7 @@ def Image(path: str):
     # Detect faces in image
     faces = face_cascade.detectMultiScale(img, scaleFactor=1.05, minNeighbors=5)
 
-    print(f"Found {len(faces)} on {path}")
+    print(f"Found {len(faces)} faces on {path}")
 
     # Put rectangles around detected faces in image
     for x, y, w, h in faces:
@@ -134,7 +136,56 @@ def Video(path: str):
     Params: str
     Return: None
     """
-    print("IN VIDEO FUNC")
+    # Print out instructions to user
+    print("Press '0' key to stop playing video...")
+    # To capture video from existing video.   
+    video = cv2.VideoCapture(path)
+    if not video:
+        err_exit("Invalid file! - please provde a path to an image", 404)
+  
+    # Load the cascade  
+    face_cascade = cv2.CascadeClassifier(FACE_CASCADE_PATH)  
+
+    # Get filename 
+    img_filename = path.split('/')[-1].split('.')[0]
+    
+    while True:  
+        # Read the frame  
+        check, frame = video.read()  
+
+        # Dynamically resize image to stay within the bounds of MAX_HEIGHT and MAX_WIDTH
+        while True:
+            height, width = frame.shape[:2]
+            if height > MAX_HEIGHT:
+                frame = ResizeWithAspectRatio(frame, height=MAX_HEIGHT)
+            elif width > MAX_WIDTH:
+                frame = ResizeWithAspectRatio(frame, width=MAX_WIDTH)
+            
+            height, width = frame.shape[:2]
+            if height <= MAX_HEIGHT and width <= MAX_WIDTH:
+                break
+
+        # Convert to grayscale  
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)  
+    
+        # Detect the faces on a given frame  
+        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.05, minNeighbors=5)
+        print(f"Found {len(faces)} faces!")
+    
+        # Draw the rectangle around detected faces
+        for (x, y, w, h) in faces:  
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)  
+    
+        # Display the video 
+        cv2.imshow('Video', frame)  
+    
+        # Stop playing video if '0' key is pressed  
+        if cv2.waitKey(1) == ord('0'):
+            print("Video playing and face detection stopped...")
+            break
+            
+    # Release the VideoCapture object  
+    video.release()  
 
 
 def ResizeWithAspectRatio(image, width=None, height=None, inter=cv2.INTER_AREA):
