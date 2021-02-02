@@ -51,7 +51,34 @@ def Webcam():
     Params: None
     Return: None
     """
-    print("in webcam func")
+    video = cv2.VideoCapture(0)
+
+    while True:
+    
+        # Turn on webcam and read data
+        check, frame = video.read()
+
+        # Read face cascade xml
+        face_cascade = cv2.CascadeClassifier(FACE_CASCADE_PATH)
+        # Detect faces in image
+        faces = face_cascade.detectMultiScale(frame, scaleFactor=1.05, minNeighbors=5)
+        print(f"Found {len(faces)} on webcam!")
+
+        # Draw rectangles around the detected faces
+        for x, y, w, h in faces:
+            frame = cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
+
+        cv2.imshow("Capturing", frame)
+
+        # Press 0 to end video capturing
+        print("Press '0' to stop capturing on webcam...")
+        if cv2.waitKey(1) == ord('0'):
+            print("Webcam capturing ended...")
+            break
+
+    # Destroys all windows open
+    cv2.destroyAllWindows()
+    
 
 
 def Image(path: str):
