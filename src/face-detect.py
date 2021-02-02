@@ -11,14 +11,15 @@ except ModuleNotFoundError:
     sys.exit(1)
 
 FACE_CASCADE_PATH = os.path.join("data", "haarcascade_frontalface_default.xml")
+MAX_HEIGHT, MAX_WIDTH = 600, 800
+
 
 def main():
-
+    """
+    Main function of face detection using OpenCV
+    """
     # Parse Command Line Arguments 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-m", "--mode", help="Set mode to Detect face in [image, video, webcam] : DEFAULT: webcam", type=str, default="webcam")
-    parser.add_argument("-p", "--path", help="Path to image or video file requires --mode to be set to image or video", type=str)
-    args = parser.parse_args()
+    args = parseArgs()
 
     # mode : function
     MODES = {
@@ -59,14 +60,33 @@ def Image(path: str):
     Params: str
     Return: None
     """
-
     # Reads the image as a numpy array
-    img = cv2.imread(os.path.join(".", path), 1)
+    img = cv2.imread(os.path.join(".", path))
+    if not img:
+        err_exit("Invalid file! - please provde a path to an image", 404)
+
     img_filename = path.split('/')[-1].split('.')[0]
 
+    # Dynamically resize image to stay within the bounds of MAX_HEIGHT and MAX_WIDTH
+    while True:
+        height, width = img.shape[:2]
+        if height > MAX_HEIGHT:
+            img = ResizeWithAspectRatio(img, height=MAX_HEIGHT)
+        elif width > MAX_WIDTH:
+            img = ResizeWithAspectRatio(img, width=MAX_WIDTH)
+        
+        height, width = img.shape[:2]
+        if height <= MAX_HEIGHT and width <= MAX_WIDTH:
+            break
+
+    # Read face cascade xml
     face_cascade = cv2.CascadeClassifier(FACE_CASCADE_PATH)
+    # Detect faces in image
     faces = face_cascade.detectMultiScale(img, scaleFactor=1.05, minNeighbors=5)
 
+    print(f"Found {len(faces)} on {path}")
+
+    # Put rectangles around detected faces in image
     for x, y, w, h in faces:
         img = cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 0), 2)
 
@@ -75,6 +95,7 @@ def Image(path: str):
 
     # Wait for keypress
     cv2.waitKey(0)
+    print("Press any key to continue...")
 
     # Destroys all windows open
     cv2.destroyAllWindows()
@@ -87,6 +108,40 @@ def Video(path: str):
     Return: None
     """
     print("IN VIDEO FUNC")
+
+
+def ResizeWithAspectRatio(image, width=None, height=None, inter=cv2.INTER_AREA):
+    """
+    Resizes an Image while maintaining aspect Ratio
+    """
+
+    dim = None
+    (h, w) = image.shape[:2]
+
+    if width is None and height is None:
+        return image
+    if width is None:
+        r = height / float(h)
+        dim = (int(w * r), height)
+    else:
+        r = width / float(w)
+        dim = (width, int(h * r))
+
+    return cv2.resize(image, dim, interpolation=inter)
+
+
+def parseArgs():
+    """
+    Parses the command line arguments
+    Params: 
+    Return: argparse.Namespace
+    """
+    # Parse Command Line Arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-m", "--mode", help="Set mode to Detect face in [image, video, webcam] : DEFAULT: webcam", type=str, default="webcam")
+    parser.add_argument("-p", "--path", help="Path to image or video file requires --mode to be set to image or video", type=str)
+
+    return parser.parse_args()
 
 
 def verifyPath(path: str):
@@ -113,4 +168,5 @@ def err_exit(msg: str, code: int):
 
 
 if __name__ == "__main__":
+    # Run the main program
     main()
