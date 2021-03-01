@@ -1,37 +1,61 @@
-## Welcome to GitHub Pages
+# OpenCV-Face-Detection
 
-You can use the [editor on GitHub](https://github.com/CSjianbel/OpenCV-Face-Detection/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Face Detection on images, videos and webcam using OpenCV and Python.<br />
+The program by default is in webcam mode.<br />
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Clone
 
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```bash
+git clone https://github.com/CSjianbel/OpenCV-Face-Detection.git""
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## Install Dependencies
 
-### Jekyll Themes
+```bash
+cd OpenCV-Face-Detection
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/CSjianbel/OpenCV-Face-Detection/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+pip install -r requirements.txt
+```
 
-### Support or Contact
+## Usage
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+```bash
+python face-detect.py [-h] [-m MODE] [-p PATH]
+
+python face-detect.py -m video ./video/test.mp4
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -m MODE, --mode MODE  Set mode to Detect face in [image, video, webcam] :
+                        DEFAULT: webcam
+  -p PATH, --path PATH  Path to image or video file requires --mode to be set
+                        to image or video
+```
+
+## Image Credits
+
+Images used for testing were taken from [unsplash.com](https://unsplash.com/)<br /><br />
+
+<span>Photo by <a href="https://unsplash.com/@zvandrei?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Andrey Zvyagintsev</a> on <a href="https://unsplash.com/?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
+
+<span>Photo by <a href="https://unsplash.com/@valentinlacoste?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Valentin Lacoste</a> on <a href="https://unsplash.com/?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
+
+<span>Photo by <a href="https://unsplash.com/@joelmott?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Joel Mott</a> on <a href="https://unsplash.com/t/people?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
+
+## Video Credits
+
+Videos used for testing were takend from [pexels.com](https://www.pexels.com/)<br /><br />
+
+<span><p>Video by **_cottonbro_** from **Pexels**</p></span>
+<span><p>Video by **_Yaroslav_** Shuraev from **Pexels**</p></span>
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+### License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+_A Project by Jiankarlo A. Belarmino_
+
